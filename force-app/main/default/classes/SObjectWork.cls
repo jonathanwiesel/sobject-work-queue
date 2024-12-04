@@ -13,11 +13,13 @@ public with sharing class SObjectWork {
     
     public class Builder {
     	
-    	private SObjectWork work;
+    	private List<SObjectWork> works;
     	
     	
     	public Builder(List<Id> recordIds, SObjectProcessor processor) {
     		
+			works = new List<SObjectWork>();
+
 			if(recordIds == null) {
 				throw new IllegalArgumentException('Id list cannot be null.');
 			}
@@ -28,12 +30,24 @@ public with sharing class SObjectWork {
 				throw new IllegalArgumentException('SObject Processor cannot be null.');
 			}
 			
-    		work = new SObjectWork();
-			work.processor = processor;
-    		work.recordIds = recordIds;
-			work.processor.setRecordIds(recordIds);
-    		work.parameters = new Map<String, Object>();
-			work.stopOnError = false;
+			Integer chunkSize = processor.getProcessableWorksByChunk();
+
+			for (Integer i = 0; i < recordIds.size(); i+= chunkSize) {
+				
+				List<Id> idsForChunk = new List<Id>();
+				for (Integer j = 0; j < chunkSize; j++) {
+					idsForChunk.add(recordIds[i + j]);
+				}
+
+				SObjectWork work = new SObjectWork();
+				work.processor = processor;
+				work.recordIds = idsForChunk;
+				work.processor.setRecordIds(idsForChunk);
+				work.parameters = new Map<String, Object>();
+				work.stopOnError = false;
+
+				works.add(work);
+			}
     	}
     	
     	
@@ -41,7 +55,10 @@ public with sharing class SObjectWork {
     		if(key == null || value == null) {
     			throw new IllegalArgumentException('Parameter keys and values cannot be null.');
     		}
-			work.parameters.put(key, value);
+
+			for (SObjectWork work : works) {
+				work.parameters.put(key, value);
+			}
 			
     		return this;
     	}
@@ -51,21 +68,32 @@ public with sharing class SObjectWork {
     		if(paramMap == null) {
     			throw new IllegalArgumentException('Parameter map cannot be null.');
     		}
-			work.parameters.putAll(paramMap);
+
+			for (SObjectWork work : works) {
+				work.parameters.putAll(paramMap);
+			}
 			
     		return this;
     	}
     	
     	
     	public Builder shouldStopOnError() {
-    		work.stopOnError = true;
+
+			for (SObjectWork work : works) {
+    			work.stopOnError = true;
+			}
+
     		return this;
     	}
     	
     	
-    	public SObjectWork build() {
-    		work.processor.setParameters(work.parameters);
-    		return work;
+    	public List<SObjectWork> build() {
+
+			for (SObjectWork work : works) {
+    			work.processor.setParameters(work.parameters);
+			}
+
+    		return works;
     	}
     }
     

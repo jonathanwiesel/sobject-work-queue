@@ -1,4 +1,4 @@
-public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c>, Database.Stateful {
+public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c>, Database.Stateful, Database.AllowCallouts {
 
 	private SObjectWork__c failedRecord;
 	private SObjectWork.LastSuccessfulId lastSuccessfulId = new SObjectWork.LastSuccessfulId();
@@ -36,10 +36,10 @@ public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c
         
     
     private List<SObjectWork__c> queryNewWork() {
-        List<SObjectWork__c> newWork = [SELECT ltxt_SObjectIds__c, txt_ProcessorClassName__c, txt_LastSuccessfulId__c, ltxt_FailedWithException__c, 
-        									   pkl_CurrentState__c, ltxt_ProcessorParamsAsJSON__c
+        List<SObjectWork__c> newWork = [SELECT SObjectIds__c, ProcessorClassName__c, LastSuccessfulId__c, FailedWithException__c, 
+        									   CurrentState__c, ProcessorParamsAsJSON__c
         								FROM SObjectWork__c 
-        								WHERE pkl_CurrentState__c = :SObjectWork.State.QUEUED.name()
+        								WHERE CurrentState__c = :SObjectWork.State.QUEUED.name()
         								ORDER BY CreatedDate ASC];
         
         return newWork;
@@ -63,7 +63,7 @@ public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c
     
     
     private void markAsInProgress(SObjectWork__c workRecord) {
-    	workRecord.pkl_CurrentState__c = SObjectWork.State.PROCESSING.name();
+    	workRecord.CurrentState__c = SObjectWork.State.PROCESSING.name();
     	update workRecord;	
     }
     
@@ -81,10 +81,10 @@ public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c
     
     
     private void markAsFailed(SObjectWork__c workRecord, Exception ex) {
-    	workRecord.pkl_CurrentState__c = SObjectWork.State.FAILED.name();
-		workRecord.txt_LastSuccessfulId__c = lastSuccessfulId.get();
-    	workRecord.ltxt_FailedWithException__c = serializeException(ex);
-    	workRecord.dtm_FailureTime__c = System.now();
+    	workRecord.CurrentState__c = SObjectWork.State.FAILED.name();
+		workRecord.LastSuccessfulId__c = lastSuccessfulId.get();
+    	workRecord.FailedWithException__c = serializeException(ex);
+    	workRecord.FailureTime__c = System.now();
     	
     	update workRecord;
     	
@@ -93,7 +93,7 @@ public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c
     
     
     private void markAsDone(SObjectWork__c workRecord) {
-    	workRecord.pkl_CurrentState__c = SObjectWork.State.DONE.name();
+    	workRecord.CurrentState__c = SObjectWork.State.DONE.name();
     	update workRecord;
     }
     
@@ -118,9 +118,9 @@ public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c
     		String org = UserInfo.getOrganizationName().trim().length() == 0 ? UserInfo.getOrganizationId() : UserInfo.getOrganizationName();
     		String user = UserInfo.getUserName().trim().length() == 0 ? UserInfo.getUserId() : UserInfo.getUserName();
     		
-	        String title = String.format('{0} > {1} > {2} {3}', new List<String>{ org, user, failedRecord.txt_ProcessorClassName__c, failedRecord.pkl_CurrentState__c });
+	        String title = String.format('{0} > {1} > {2} {3}', new List<String>{ org, user, failedRecord.ProcessorClassName__c, failedRecord.CurrentState__c });
 	        String urlToFailedWork = System.URL.getSalesforceBaseUrl().toExternalForm()+'/' + failedRecord.Id;
-	        String body = String.format('{0} \n\n {1}', new List<String>{ urlToFailedWork, failedRecord.ltxt_FailedWithException__c });
+	        String body = String.format('{0} \n\n {1}', new List<String>{ urlToFailedWork, failedRecord.FailedWithException__c });
 	        
 	        User triggeredByUser = [SELECT Name,Email FROM User WHERE Id = :UserInfo.getUserId()];
 	        sendEmail(triggeredByUser.Email, title, body);
@@ -145,7 +145,7 @@ public class SObjectWorkQueue_Batch implements Database.Batchable<SObjectWork__c
     
     
 	private void removeFinishedWorkFromQueue() {
-		List<SObjectWork__c> workMarkedAsDone = [SELECT Id FROM SObjectWork__c WHERE pkl_CurrentState__c = :SObjectWork.State.DONE.name()];
+		List<SObjectWork__c> workMarkedAsDone = [SELECT Id FROM SObjectWork__c WHERE CurrentState__c = :SObjectWork.State.DONE.name()];
 		delete workMarkedAsDone;
 	}
 }

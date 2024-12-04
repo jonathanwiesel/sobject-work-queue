@@ -2,12 +2,12 @@
 public abstract class SObjectWorkDeserializer {
     
     public static SObjectWork toObject(SObjectWork__c record) {
-        List<Id> ids = convertToList(record.ltxt_SObjectIds__c);
-        SObjectProcessor processor = getClassForName(record.txt_ProcessorClassName__c);
-        Map<String, Object> paramMap = deserializeParameters(record.ltxt_ProcessorParamsAsJSON__c);
+        List<Id> ids = convertToList(record.SObjectIds__c);
+        SObjectProcessor processor = getClassForName(record.ProcessorClassName__c);
+        Map<String, Object> paramMap = deserializeParameters(record.ProcessorParamsAsJSON__c);
 
-        SObjectWork result = (paramMap == null || paramMap.isEmpty()) ? new SObjectWork.Builder(ids, processor).build() 
-    											  					  : new SObjectWork.Builder(ids, processor).withParams(paramMap).build();
+        SObjectWork result = (paramMap == null || paramMap.isEmpty()) ? new SObjectWork.Builder(ids, processor).build()[0] 
+    											  					  : new SObjectWork.Builder(ids, processor).withParams(paramMap).build()[0];
         return result;
     }
     

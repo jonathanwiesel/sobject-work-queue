@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ltxt_ProcessorParamsAsJSON__c</fullName>
+    <fullName>SObjectIds__c</fullName>
     <externalId>false</externalId>
-    <label>Processor Params As JSON</label>
+    <label>SObject Ids</label>
     <length>32768</length>
     <type>LongTextArea</type>
     <visibleLines>10</visibleLines>

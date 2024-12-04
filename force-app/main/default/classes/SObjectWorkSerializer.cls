@@ -6,7 +6,7 @@ public abstract class SObjectWorkSerializer {
     public static final Integer MAX_IDS_PER_LTXT;
    
     private static final String RECORD_OBJECT = 'SObjectWork__c';
-    private static final String ID_FIELD_NAME = 'ltxt_SObjectIds__c';
+    private static final String ID_FIELD_NAME = 'SObjectIds__c';
     private static final Integer ID_LENGTH = 18;
     private static final Integer LENGTH_PER_ID;
     
@@ -17,21 +17,24 @@ public abstract class SObjectWorkSerializer {
     }
     
     
-    public static List<SObjectWork__c> toOneOrMoreSObjectRecords(SObjectWork work) {
+    public static List<SObjectWork__c> toOneOrMoreSObjectRecords(List<SObjectWork> works) {
         List<SObjectWork__c> records = new List<SObjectWork__c>();
         
-        for(List<Id> idChunk : chunkIdListToFitIntoTextField( work.recordIds )) {
-        	
-            SObjectWork__c newRecord = new SObjectWork__c();
-            newRecord.pkl_CurrentState__c = SObjectWork.State.QUEUED.name();
-            newRecord.ltxt_SObjectIds__c = toCommaSeperatedString(idChunk);
-            newRecord.txt_ProcessorClassName__c = work.processor.getFullClassName();
-            
-            if(!work.parameters.isEmpty()) {
-            	newRecord.ltxt_ProcessorParamsAsJSON__c = serializeForLongTxtField(work.parameters);
+        for (SObjectWork work : works) {
+
+            for(List<Id> idChunk : chunkIdListToFitIntoTextField( work.recordIds )) {
+                
+                SObjectWork__c newRecord = new SObjectWork__c();
+                newRecord.CurrentState__c = SObjectWork.State.QUEUED.name();
+                newRecord.SObjectIds__c = toCommaSeperatedString(idChunk);
+                newRecord.ProcessorClassName__c = work.processor.getFullClassName();
+                
+                if(!work.parameters.isEmpty()) {
+                    newRecord.ProcessorParamsAsJSON__c = serializeForLongTxtField(work.parameters);
+                }
+                
+                records.add(newRecord);
             }
-            
-            records.add(newRecord);
         }
         
         return records;

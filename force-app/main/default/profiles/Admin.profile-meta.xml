@@ -59,32 +59,32 @@
     <custom>false</custom>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SObjectWork__c.dtm_FailureTime__c</field>
+        <field>SObjectWork__c.FailureTime__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SObjectWork__c.ltxt_FailedWithException__c</field>
+        <field>SObjectWork__c.FailedWithException__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SObjectWork__c.ltxt_ProcessorParamsAsJSON__c</field>
+        <field>SObjectWork__c.ProcessorParamsAsJSON__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SObjectWork__c.ltxt_SObjectIds__c</field>
+        <field>SObjectWork__c.SObjectIds__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SObjectWork__c.pkl_CurrentState__c</field>
+        <field>SObjectWork__c.CurrentState__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SObjectWork__c.txt_LastSuccessfulId__c</field>
+        <field>SObjectWork__c.LastSuccessfulId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>

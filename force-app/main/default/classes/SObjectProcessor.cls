@@ -4,4 +4,5 @@ public interface SObjectProcessor {
 	void setParameters(Map<String, Object> parameterMap);
 	Boolean canRunSynchronously();
 	void process(SObjectWork.LastSuccessfulId lastSuccesfulId);
+	Integer getProcessableWorksByChunk();
 }

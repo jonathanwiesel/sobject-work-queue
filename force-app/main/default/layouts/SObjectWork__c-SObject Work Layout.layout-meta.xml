@@ -11,31 +11,31 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ltxt_SObjectIds__c</field>
+                <field>SObjectIds__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>txt_ProcessorClassName__c</field>
+                <field>ProcessorClassName__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ltxt_ProcessorParamsAsJSON__c</field>
+                <field>ProcessorParamsAsJSON__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>pkl_CurrentState__c</field>
+                <field>CurrentState__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ltxt_FailedWithException__c</field>
+                <field>FailedWithException__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>dtm_FailureTime__c</field>
+                <field>FailureTime__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>txt_LastSuccessfulId__c</field>
+                <field>LastSuccessfulId__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>

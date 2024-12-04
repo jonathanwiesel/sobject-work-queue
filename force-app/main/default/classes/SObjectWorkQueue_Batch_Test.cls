@@ -57,7 +57,7 @@ public class SObjectWorkQueue_Batch_Test {
         System.assertEquals(NEW_RECORDS, returnedRecords.size());
         
         for(SObjectWork__c record : returnedRecords) {
-            System.assertEquals(SObjectWork.State.QUEUED.name(), record.pkl_CurrentState__c);
+            System.assertEquals(SObjectWork.State.QUEUED.name(), record.CurrentState__c);
         }
     }
     
@@ -79,7 +79,7 @@ public class SObjectWorkQueue_Batch_Test {
          
          
         // Verify
-        Integer countNewWork = [SELECT COUNT() FROM SObjectWork__c WHERE pkl_CurrentState__c = :SObjectWork.State.QUEUED.name()];
+        Integer countNewWork = [SELECT COUNT() FROM SObjectWork__c WHERE CurrentState__c = :SObjectWork.State.QUEUED.name()];
         Boolean newWorkWasProcessedByRestartedBatch = (countNewWork == 0);
         System.assert(newWorkWasProcessedByRestartedBatch);
     }
@@ -106,9 +106,9 @@ public class SObjectWorkQueue_Batch_Test {
         List<SObjectWork__c> resultList = new List<SObjectWork__c>();
 
         SObjectWork__c record = newSObjectWorkRecord();
-        record.pkl_CurrentState__c = SObjectWork.State.FAILED.name();
-        record.ltxt_FailedWithException__c = 'Exception text';
-        record.txt_LastSuccessfulId__c = SObjectWorkTestHelper.createListOfSameIds(1).get(0);
+        record.CurrentState__c = SObjectWork.State.FAILED.name();
+        record.FailedWithException__c = 'Exception text';
+        record.LastSuccessfulId__c = SObjectWorkTestHelper.createListOfSameIds(1).get(0);
         
         for(Integer i=0; i<howMany; i++) {
             resultList.add(record.clone());

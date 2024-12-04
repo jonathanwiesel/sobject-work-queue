@@ -17,7 +17,7 @@ private class SObjectWorkQueue_Test {
         SObjectWork work = new SObjectWork.Builder(oppsToProcess, processor).withParams(paramsMap).build();
         
         Test.startTest();  
-        SObjectWorkQueue.addWork(work);
+        SObjectWorkQueue.addWorks(new SObjectWork[]{work});
         Test.stopTest();
         
         
@@ -48,7 +48,7 @@ private class SObjectWorkQueue_Test {
         // Execute
         SObjectWork work = new SObjectWork.Builder(oppsToProcess, processor).withParams(paramsMap).build();
         // Note: without startTest/StopTest this would fail if we run in batch mode
-        SObjectWorkQueue.addWork(work);
+        SObjectWorkQueue.addWorks(new SObjectWork[]{work});
         
         
         // Verify
@@ -115,9 +115,9 @@ private class SObjectWorkQueue_Test {
         
         // Setup
         SObjectWork__c doneWork = new SObjectWork__c();
-		doneWork.ltxt_SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
-		doneWork.txt_ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
-		doneWork.pkl_CurrentState__c = SObjectWork.State.DONE.name();
+		doneWork.SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
+		doneWork.ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
+		doneWork.CurrentState__c = SObjectWork.State.DONE.name();
 		insert doneWork;
 		
         final List<Id> oppsToProcess = insertOppsWithAmountZeroAndReturnIds(10);
@@ -131,7 +131,7 @@ private class SObjectWorkQueue_Test {
         SObjectWork work = new SObjectWork.Builder(oppsToProcess, processor).withParams(paramsMap).build();
         
         Test.startTest();   
-        SObjectWorkQueue.addWork(work);
+        SObjectWorkQueue.addWorks(new SObjectWork[]{work});
         Test.stopTest();
         
         
@@ -158,19 +158,19 @@ private class SObjectWorkQueue_Test {
         SObjectWork work = new SObjectWork.Builder(oppsToProcess, processor).withParams(paramsMap).build();
         
         Test.startTest();   
-        SObjectWorkQueue.addWork(work);
+        SObjectWorkQueue.addWorks(new SObjectWork[]{work});
         Test.stopTest();
         
         
         // Verify
-        List<SObjectWork__c> failedWork = [SELECT pkl_CurrentState__c, txt_LastSuccessfulId__c, ltxt_FailedWithException__c 
+        List<SObjectWork__c> failedWork = [SELECT CurrentState__c, LastSuccessfulId__c, FailedWithException__c 
                                            FROM SObjectWork__c 
                                            ];
         System.assertEquals(1, failedWork.size());
         
         SObjectWork__c failedRecord = failedWork.get(0);
-        System.assertEquals(lastSuccessfulId, failedRecord.txt_LastSuccessfulId__c,' Last successful Id');
-        System.assertNotEquals('', failedRecord.ltxt_FailedWithException__c, 'Failed with Exception');
+        System.assertEquals(lastSuccessfulId, failedRecord.LastSuccessfulId__c,' Last successful Id');
+        System.assertNotEquals('', failedRecord.FailedWithException__c, 'Failed with Exception');
     }
     
     
@@ -188,7 +188,7 @@ private class SObjectWorkQueue_Test {
         SObjectWork work = new SObjectWork.Builder(oppsToProcess, processor).withParams(paramsMap).build();
         
         Test.startTest();   
-        SObjectWorkQueue.addWork(work);
+        SObjectWorkQueue.addWorks(new SObjectWork[]{work});
         Test.stopTest();
         
         
@@ -221,9 +221,9 @@ private class SObjectWorkQueue_Test {
     
     public static SObjectWork__c persistWorkWithStateAndIds(SObjectWork.State state, List<Id> ids) {
     	SObjectWork__c result = new SObjectWork__c( 
-	    								ltxt_SObjectIds__c = String.join(ids, ','),
-	    								txt_ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor',
-	    								pkl_CurrentState__c = state.name());
+	    								SObjectIds__c = String.join(ids, ','),
+	    								ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor',
+	    								CurrentState__c = state.name());
 		insert result;
 		return result;
     }

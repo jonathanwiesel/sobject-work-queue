@@ -7,8 +7,8 @@ private class SObjectWorkDeserializer_Test {
 		Boolean noExceptionWasThrown = true;
 		
 		SObjectWork__c serializedWork = new SObjectWork__c();
-		serializedWork.ltxt_SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
-		serializedWork.txt_ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
+		serializedWork.SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
+		serializedWork.ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
 		
 		
 		// Execute
@@ -17,7 +17,7 @@ private class SObjectWorkDeserializer_Test {
 		
 		// Verify
 		System.assertNotEquals(null, work.processor);
-		System.assertEquals(serializedWork.txt_ProcessorClassName__c, work.processor.getFullClassName());
+		System.assertEquals(serializedWork.ProcessorClassName__c, work.processor.getFullClassName());
 	}
 	
 	
@@ -28,7 +28,7 @@ private class SObjectWorkDeserializer_Test {
 		Boolean expectedExceptionWasThrown = false;
 		
 		SObjectWork__c serializedWork = new SObjectWork__c();
-		serializedWork.ltxt_SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
+		serializedWork.SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
 		
 		
 		// Execute
@@ -52,8 +52,8 @@ private class SObjectWorkDeserializer_Test {
 		Boolean expectedExceptionWasThrown = false;
 		
 		SObjectWork__c serializedWork = new SObjectWork__c();
-		serializedWork.ltxt_SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
-		serializedWork.txt_ProcessorClassName__c = 'NonExistingClass';
+		serializedWork.SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
+		serializedWork.ProcessorClassName__c = 'NonExistingClass';
 		
 		
 		// Execute
@@ -76,8 +76,8 @@ private class SObjectWorkDeserializer_Test {
 		Boolean expectedExceptionWasThrown = false;
 		
 		SObjectWork__c serializedWork = new SObjectWork__c();
-		serializedWork.ltxt_SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
-		serializedWork.txt_ProcessorClassName__c = 'SObjectWorkDeserializer_Test';
+		serializedWork.SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,a0Cd000000COKdp';
+		serializedWork.ProcessorClassName__c = 'SObjectWorkDeserializer_Test';
 		
 		
 		// Execute
@@ -100,8 +100,8 @@ private class SObjectWorkDeserializer_Test {
 		Boolean expectedExceptionWasThrown = false;
 		
 		SObjectWork__c workWithNoIds = new SObjectWork__c();
-		workWithNoIds.txt_ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
-		workWithNoIds.ltxt_SObjectIds__c = '';
+		workWithNoIds.ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
+		workWithNoIds.SObjectIds__c = '';
 		
 		// Execute
 		try {
@@ -124,8 +124,8 @@ private class SObjectWorkDeserializer_Test {
 		Boolean expectedExceptionWasThrown = false;
 		
 		SObjectWork__c workWithUnparsableIds = new SObjectWork__c();
-		workWithUnparsableIds.ltxt_SObjectIds__c = 'asfd,sdf,sd,fds,sdfds';
-		workWithUnparsableIds.txt_ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
+		workWithUnparsableIds.SObjectIds__c = 'asfd,sdf,sd,fds,sdfds';
+		workWithUnparsableIds.ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
 		
 		
 		// Execute
@@ -148,8 +148,8 @@ private class SObjectWorkDeserializer_Test {
 		Boolean expectedExceptionWasThrown = false;
 		
 		SObjectWork__c workWithInvalidIds = new SObjectWork__c();
-		workWithInvalidIds.ltxt_SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,THIS_IS_NO_ID,a0Cd000000COKdk';
-		workWithInvalidIds.txt_ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
+		workWithInvalidIds.SObjectIds__c = 'a0Cd000000COKdj,a0Cd000000COKdk,THIS_IS_NO_ID,a0Cd000000COKdk';
+		workWithInvalidIds.ProcessorClassName__c = 'SObjectWorkTestHelper.ExampleSObjectProcessor';
 		
 		
 		// Execute
